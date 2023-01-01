@@ -1,0 +1,28 @@
+version: '3'
+services:
+  front:
+    build:
+      context: ./
+      dockerfile: ./docker/front/Dockerfile   
+    container_name: front 
+    ports:
+      - 80:3000
+    volumes:
+      - ./front:/usr/src/app
+      - front_node_modules:/usr/src/app/node_modules    
+    entrypoint: bash -c "npm run start"
+  server:
+    build:
+      context: ./
+      dockerfile: ./docker/server/Dockerfile   
+    container_name: server 
+    ports:
+      - 4000:3000
+    volumes:
+      - ./server:/usr/src/app
+      - server_node_modules:/usr/src/app/node_modules    
+    entrypoint: bash -c "npm run start:dev"
+
+volumes:
+  front_node_modules:
+  server_node_modules:  

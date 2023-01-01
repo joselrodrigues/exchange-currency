@@ -3,13 +3,13 @@ services:
   front:
     build:
       context: ./
-      dockerfile: ./docker/front/Dockerfile   
-    container_name: front 
+      dockerfile: ./docker/frontend/Dockerfile   
+    container_name: frontend 
     ports:
       - 80:3000
     volumes:
-      - ./front:/usr/src/app
-      - front_node_modules:/usr/src/app/node_modules    
+      - ./frontend:/usr/src/app
+      - frontend_node_modules:/usr/src/app/node_modules    
     entrypoint: bash -c "npm run start"
   server:
     build:
@@ -24,5 +24,5 @@ services:
     entrypoint: bash -c "npm run start:dev"
 
 volumes:
-  front_node_modules:
+  frontend_node_modules:
   server_node_modules:  

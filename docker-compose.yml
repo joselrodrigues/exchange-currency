@@ -3,26 +3,54 @@ services:
   front:
     build:
       context: ./
-      dockerfile: ./docker/frontend/Dockerfile   
-    container_name: frontend 
+      dockerfile: ./docker/client/Dockerfile   
+    container_name: client 
     ports:
       - 80:3000
     volumes:
-      - frontend_node_modules:/usr/src/app/node_modules  
-      - ./frontend:/usr/src/app  
+      - client_node_modules:/usr/src/app/node_modules  
+      - ./client:/usr/src/app  
     entrypoint: bash -c "npm run start"
   server:
     build:
       context: ./
       dockerfile: ./docker/server/Dockerfile   
     container_name: server 
+    env_file:
+      - .env
     ports:
       - 4000:3000
+    networks:
+      - server
+    depends_on:
+      db:
+        condition: service_healthy
     volumes:
       - ./server:/usr/src/app
       - server_node_modules:/usr/src/app/node_modules    
     entrypoint: bash -c "npm run start:dev"
+  db:
+    image: mysql:8.0
+    container_name: db
+    env_file:
+      - .env
+    restart: always
+    ports:
+      - "3306:3306" 
+    networks:
+      - server
+    volumes: 
+      - db:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+      timeout: 8s
+      retries: 10  
 
+networks:
+  server:
+    driver: bridge
 volumes:
-  frontend_node_modules:
+  client_node_modules:
   server_node_modules:  
+  db:
+    driver: local

@@ -6,6 +6,11 @@ import { ExchangeRepository } from './exchange.repository';
 import { Exchange } from './exchange.entity';
 import { currencieProp } from './types';
 import { ConfigService } from '@nestjs/config';
+import {
+  paginate,
+  Pagination,
+  IPaginationOptions,
+} from 'nestjs-typeorm-paginate';
 
 @Injectable()
 export class ExchangeService {
@@ -15,6 +20,11 @@ export class ExchangeService {
     private readonly configService: ConfigService,
   ) {}
 
+  getExchangeDataByPage(
+    options: IPaginationOptions,
+  ): Promise<Pagination<Exchange>> {
+    return this.exchangeRepository.paginate(options);
+  }
   /**
    *
    * @description method that get the conversion rates

@@ -16,8 +16,8 @@ export class Socket implements OnModuleInit, OnModuleDestroy {
     private configService: ConfigService,
   ) {}
   subscription$;
-  server: Server;
   @WebSocketServer()
+  server: Server;
   onModuleInit() {
     //TODO: change env's name
     const timeInMs = this.configService.get('UPDATE_INTERVAL_MS');
@@ -30,11 +30,15 @@ export class Socket implements OnModuleInit, OnModuleDestroy {
   onModuleDestroy() {
     this.subscription$.unsubscribe();
   }
-  @SubscribeMessage('message')
+  @SubscribeMessage('updateLiveCurrencies')
   async handleUpdate() {
-    const rawData = await this.exchangeService.updateLiveCurrencies();
-
-    console.log(rawData);
-    // this.server.emit('update', { data });
+    // const rawData = await this.exchangeService.updateLiveCurrencies();
+    const data = await this.exchangeService.getExchangeDataByPage({
+      limit: 1,
+      page: 1,
+      route: '',
+    });
+    console.log(data, 'SEEEEEEEEE');
+    // this.server.emit('getExchangeData', {});
   }
 }

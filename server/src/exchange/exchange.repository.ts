@@ -4,6 +4,11 @@ import { EntityNotFoundError, Repository } from 'typeorm';
 import { Exchange } from './exchange.entity';
 import { Type } from './exchange.model';
 import { currencieProp } from './types';
+import {
+  paginate,
+  Pagination,
+  IPaginationOptions,
+} from 'nestjs-typeorm-paginate';
 
 @Injectable()
 export class ExchangeRepository {
@@ -12,6 +17,12 @@ export class ExchangeRepository {
     private exchangeRepository: Repository<Exchange>,
   ) {}
 
+  paginate(options: IPaginationOptions): Promise<Pagination<Exchange>> {
+    const queryBuilder = this.exchangeRepository.createQueryBuilder('c');
+    queryBuilder.orderBy('c.date', 'ASC');
+
+    return paginate<Exchange>(queryBuilder, options);
+  }
   /**
    *
    * @description method that allows to create a live currencie

@@ -5,12 +5,14 @@ import { lastValueFrom, map, Observable } from 'rxjs';
 import { ExchangeRepository } from './exchange.repository';
 import { Exchange } from './exchange.entity';
 import { currencieProp } from './types';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class ExchangeService {
   constructor(
     private readonly httpService: HttpService,
     private readonly exchangeRepository: ExchangeRepository,
+    private readonly configService: ConfigService,
   ) {}
 
   /**
@@ -21,10 +23,11 @@ export class ExchangeService {
    * @returns {Observable<currencieDto>}
    */
   getRate({ from, to }: RateDto): Observable<currencieDto> {
+    const APIKEY = this.configService.get('API_KEY');
     return this.httpService
       .get(`http://rest.coinapi.io/v1/exchangerate/${from}/${to}`, {
         headers: {
-          'X-CoinAPI-Key': '1DDB114F-9756-40C5-A064-66A76864E144',
+          'X-CoinAPI-Key': `${APIKEY}`,
           'Accept-Encoding': 'gzip,deflate,compress',
         },
       })

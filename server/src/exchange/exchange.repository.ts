@@ -1,14 +1,15 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { EntityNotFoundError, Repository } from 'typeorm';
-import { Exchange } from './exchange.entity';
-import { Type } from './exchange.model';
-import { currencieProp } from './types';
 import {
   paginate,
   Pagination,
   IPaginationOptions,
 } from 'nestjs-typeorm-paginate';
+import { EntityNotFoundError, Repository } from 'typeorm';
+
+import { Exchange } from './exchange.entity';
+import { Type } from './exchange.model';
+import { currencieProp } from './types';
 
 @Injectable()
 export class ExchangeRepository {
@@ -16,7 +17,12 @@ export class ExchangeRepository {
     @InjectRepository(Exchange)
     private exchangeRepository: Repository<Exchange>,
   ) {}
-
+  /**
+   *
+   * @description method that get exchange data by page
+   * @param {object} options params to control the page and the limit
+   * @returns {Promise<Pagination<Exchange>> }
+   */
   paginate(options: IPaginationOptions): Promise<Pagination<Exchange>> {
     const queryBuilder = this.exchangeRepository.createQueryBuilder('c');
     queryBuilder.orderBy('c.date', 'ASC');

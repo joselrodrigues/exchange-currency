@@ -1,12 +1,15 @@
 import { OnModuleInit, OnModuleDestroy } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import {
+  MessageBody,
   SubscribeMessage,
   WebSocketGateway,
   WebSocketServer,
 } from '@nestjs/websockets';
-import { lastValueFrom, interval } from 'rxjs';
+import { IPaginationOptions } from 'nestjs-typeorm-paginate';
+import { interval } from 'rxjs';
 import { Server } from 'socket.io';
+
 import { ExchangeService } from './exchange.service';
 
 @WebSocketGateway()
@@ -19,12 +22,11 @@ export class Socket implements OnModuleInit, OnModuleDestroy {
   @WebSocketServer()
   server: Server;
   onModuleInit() {
-    //TODO: change env's name
     const timeInMs = this.configService.get('UPDATE_INTERVAL_MS');
 
-    // this.subscription$ = interval(timeInMs).subscribe(() =>
-    //   console.log('SEEEE'),
-    // );
+    this.subscription$ = interval(timeInMs).subscribe(() =>
+      this.handleUpdate(),
+    );
   }
 
   onModuleDestroy() {
@@ -32,13 +34,19 @@ export class Socket implements OnModuleInit, OnModuleDestroy {
   }
   @SubscribeMessage('updateLiveCurrencies')
   async handleUpdate() {
-    // const rawData = await this.exchangeService.updateLiveCurrencies();
+    const rawData = await this.exchangeService.updateLiveCurrencies();
+    this.server.emit('update', { rawData });
+  }
+  @SubscribeMessage('getExchangeData')
+  async getExchangeData(
+    @MessageBody()
+    { limit = 5, page = 1, route = '/exchange' }: IPaginationOptions,
+  ) {
     const data = await this.exchangeService.getExchangeDataByPage({
-      limit: 1,
-      page: 1,
-      route: '',
+      page,
+      limit,
+      route,
     });
-    console.log(data, 'SEEEEEEEEE');
-    // this.server.emit('getExchangeData', {});
+    this.server.emit('exchangeData', data);
   }
 }

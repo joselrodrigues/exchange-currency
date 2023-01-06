@@ -1,16 +1,13 @@
 import { HttpService } from '@nestjs/axios';
 import { Injectable } from '@nestjs/common';
-import { currencieDto, RateDto } from './dto/exchange-dto';
-import { lastValueFrom, map, Observable } from 'rxjs';
-import { ExchangeRepository } from './exchange.repository';
-import { Exchange } from './exchange.entity';
-import { currencieProp } from './types';
 import { ConfigService } from '@nestjs/config';
-import {
-  paginate,
-  Pagination,
-  IPaginationOptions,
-} from 'nestjs-typeorm-paginate';
+import { Pagination, IPaginationOptions } from 'nestjs-typeorm-paginate';
+import { lastValueFrom, map, Observable, of } from 'rxjs';
+
+import { currencieDto, RateDto } from './dto/exchange-dto';
+import { Exchange } from './exchange.entity';
+import { ExchangeRepository } from './exchange.repository';
+import { currencieProp } from './types';
 
 @Injectable()
 export class ExchangeService {
@@ -20,6 +17,12 @@ export class ExchangeService {
     private readonly configService: ConfigService,
   ) {}
 
+  /**
+   *
+   * @description method that get exchange data by page
+   * @param {object} options params to control the page and the limit
+   * @returns {Promise<Pagination<Exchange>> }
+   */
   getExchangeDataByPage(
     options: IPaginationOptions,
   ): Promise<Pagination<Exchange>> {
@@ -34,14 +37,21 @@ export class ExchangeService {
    */
   getRate({ from, to }: RateDto): Observable<currencieDto> {
     const APIKEY = this.configService.get('API_KEY');
-    return this.httpService
-      .get(`http://rest.coinapi.io/v1/exchangerate/${from}/${to}`, {
-        headers: {
-          'X-CoinAPI-Key': `${APIKEY}`,
-          'Accept-Encoding': 'gzip,deflate,compress',
-        },
-      })
-      .pipe(map((res) => res?.data));
+    // return this.httpService
+    //   .get(`http://rest.coinapi.io/v1/exchangerate/${from}/${to}`, {
+    //     headers: {
+    //       'X-CoinAPI-Key': `${APIKEY}`,
+    //       'Accept-Encoding': 'gzip,deflate,compress',
+    //     },
+    //   })
+    return of({
+      data: {
+        time: `${new Date()}`,
+        asset_id_base: from,
+        asset_id_quote: to,
+        rate: Math.random(),
+      },
+    }).pipe(map((res) => res?.data));
   }
   /**
    *

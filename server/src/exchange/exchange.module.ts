@@ -1,12 +1,13 @@
+import { HttpModule } from '@nestjs/axios';
 import { Module } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+
+import { ExchangeController } from './exchange.controller';
 import { Exchange } from './exchange.entity';
 import { Socket } from './exchange.gateway';
-import { ExchangeController } from './exchange.controller';
-import { ExchangeService } from './exchange.service';
-import { HttpModule } from '@nestjs/axios';
-import { ConfigModule } from '@nestjs/config';
 import { ExchangeRepository } from './exchange.repository';
+import { ExchangeService } from './exchange.service';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Exchange]), HttpModule, ConfigModule],

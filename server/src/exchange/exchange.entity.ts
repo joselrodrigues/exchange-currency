@@ -1,4 +1,5 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+
 import { Type } from './exchange.model';
 
 @Entity()

@@ -32,7 +32,7 @@ export class Socket implements OnModuleInit, OnModuleDestroy {
   }
   @SubscribeMessage('message')
   async handleUpdate() {
-    const rawData = await this.exchangeService.updateCurrencies();
+    const rawData = await this.exchangeService.updateLiveCurrencies();
 
     console.log(rawData);
     // this.server.emit('update', { data });

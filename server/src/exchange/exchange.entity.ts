@@ -3,23 +3,23 @@ import { Type } from './exchange.model';
 
 @Entity()
 export class Exchange {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
+  @PrimaryGeneratedColumn()
+  id: number;
 
   @Column({ type: 'datetime' })
-  date: string;
+  date: Date;
 
   @Column()
   currency_from: string;
 
   @Column({ type: 'integer' })
-  first_amount: string;
+  amount: number;
 
   @Column()
   currency_to: string;
 
   @Column({ type: 'numeric' })
-  second_amount: string;
+  rate: number;
 
   @Column()
   type: Type;

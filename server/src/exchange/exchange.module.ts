@@ -6,10 +6,11 @@ import { ExchangeController } from './exchange.controller';
 import { ExchangeService } from './exchange.service';
 import { HttpModule } from '@nestjs/axios';
 import { ConfigModule } from '@nestjs/config';
+import { ExchangeRepository } from './exchange.repository';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Exchange]), HttpModule, ConfigModule],
-  providers: [Socket, ExchangeService],
+  providers: [Socket, ExchangeService, ExchangeRepository],
   controllers: [ExchangeController],
 })
 export class ExchangeModule {}

@@ -3,7 +3,7 @@
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
-  <a href="https://images.app.goo.gl/exDCNfRT5xMbYa3B7">
+  <a href="https://animecollector.com.mx/wp-content/uploads/2022/10/pochita-min.jpg">
     <img src="images/logo.png" alt="Logo" width="80" height="80">
   </a>
 
@@ -126,10 +126,3 @@ Project Link: [https://github.com/your_username/repo_name](https://github.com/yo
 
 [React.js]: https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB
 [React-url]: https://reactjs.org/
-# Getting Started
-
-Create .env file in the root of the project and fill it with
-
-
-
-Then execute make start

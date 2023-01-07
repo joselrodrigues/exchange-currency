@@ -21,6 +21,7 @@ export class Socket implements OnModuleInit, OnModuleDestroy {
   subscription$;
   @WebSocketServer()
   server: Server;
+
   onModuleInit() {
     const timeInMs = this.configService.get('UPDATE_INTERVAL_MS');
 
@@ -32,11 +33,13 @@ export class Socket implements OnModuleInit, OnModuleDestroy {
   onModuleDestroy() {
     this.subscription$.unsubscribe();
   }
+
   @SubscribeMessage('updateLiveCurrencies')
   async handleUpdate() {
     const rawData = await this.exchangeService.updateLiveCurrencies();
     this.server.emit('update', { rawData });
   }
+
   @SubscribeMessage('getExchangeData')
   async getExchangeData(
     @MessageBody()

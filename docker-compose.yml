@@ -1,12 +1,14 @@
 version: '3'
 services:
-  front:
+  client:
     build:
       context: ./
       dockerfile: ./docker/client/Dockerfile   
     container_name: client 
     ports:
       - 80:3000
+    depends_on:
+      - server
     volumes:
       - client_node_modules:/usr/src/app/node_modules  
       - ./client:/usr/src/app  
@@ -23,8 +25,11 @@ services:
     networks:
       - server
     depends_on:
+      coinapi:
+        condition: service_started
       db:
         condition: service_healthy
+        
     volumes:
       - ./server:/usr/src/app
       - server_node_modules:/usr/src/app/node_modules    
@@ -36,7 +41,7 @@ services:
       - .env
     restart: always
     ports:
-      - "3306:3306" 
+      - 3306:3306 
     networks:
       - server
     volumes: 
@@ -44,7 +49,18 @@ services:
     healthcheck:
       test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
       timeout: 8s
-      retries: 10  
+      retries: 10
+  coinapi:
+    build:
+        context: .
+        dockerfile: ./docker/api/Dockerfile
+    container_name: coinapi 
+    networks:
+      - server
+    ports:
+      - 4001:4001
+    volumes:
+      - ./api:/usr/src/app   
 
 networks:
   server:

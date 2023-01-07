@@ -19,7 +19,7 @@ export class Exchange {
   @Column()
   currency_to: string;
 
-  @Column({ type: 'numeric' })
+  @Column({ type: 'decimal', precision: 5, scale: 2 })
   rate: number;
 
   @Column()

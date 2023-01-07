@@ -3,8 +3,8 @@
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
-  <a href="https://animecollector.com.mx/wp-content/uploads/2022/10/pochita-min.jpg">
-    <img src="images/logo.png" alt="Logo" width="80" height="80">
+  <a >
+    <img src="https://animecollector.com.mx/wp-content/uploads/2022/10/pochita-min.jpg" alt="Logo" width="80" height="80">
   </a>
 
   <h3 align="center">Exchange Simulation</h3>

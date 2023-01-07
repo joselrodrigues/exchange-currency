@@ -12,7 +12,9 @@ import { Server } from 'socket.io';
 
 import { ExchangeService } from './exchange.service';
 
-@WebSocketGateway()
+@WebSocketGateway({
+  cors: true,
+})
 export class Socket implements OnModuleInit, OnModuleDestroy {
   constructor(
     private readonly exchangeService: ExchangeService,

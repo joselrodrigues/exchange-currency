@@ -8,6 +8,7 @@ interface OptionProps {
 }
 
 export const DropdownContainer = styled.div<DropdownProps>`
+  width: 100%;
   position: relative;
   & > .link + .select {
     ${({ isVisible }) =>
@@ -23,7 +24,7 @@ export const Button = styled.button`
   flex-direction: row;
   align-items: center;
   gap: 8px;
-  padding: 13px 24px;
+  padding: 0 15px;
   text-align: left;
   width: 100%;
   height: 42px;
@@ -86,4 +87,12 @@ export const DownArrowImage = styled.img`
 
 export const Text = styled.div`
   flex: 1;
+`;
+
+export const Label = styled.label`
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 152.2%;
+  color: #9c9c9c;
 `;

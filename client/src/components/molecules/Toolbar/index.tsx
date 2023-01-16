@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import Button from '../../atoms/Button';
 import { Dropdown } from '../../atoms/Dropdown';
 import Input from '../../atoms/Input';
+import { exchangeData } from '../../types';
 import { currencyOptions } from './constants';
 import {
   EqualSign,
@@ -11,7 +12,7 @@ import {
   ToolbarWrapper,
 } from './index.style';
 
-const Toolbar = () => {
+const Toolbar = ({ data }: exchangeData) => {
   const [currencyFrom, setCurrencyFrom] = useState<string | null>('');
   const [currenciesTo, setCurrenciesTo] = useState(currencyOptions);
 
@@ -25,7 +26,7 @@ const Toolbar = () => {
 
   return (
     <ToolbarContainer>
-      <Title>Exchange</Title>
+      <Title>Exchange </Title>
       <ToolbarWrapper>
         <Dropdown
           labelText="Currency from"

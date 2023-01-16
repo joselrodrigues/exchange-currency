@@ -1,19 +1,25 @@
-import React, { useEffect } from 'react';
-import { io } from 'socket.io-client';
+import { useContext, useEffect, useState } from 'react';
 
+import { Context } from '../../contexts/websocket';
 import Toolbar from '../molecules/Toolbar';
+import HistoryTable from '../organism/HistoryTable';
+import { exchangeData } from '../types';
+import { ExchangeContainer } from './Exchange.style';
 
-// I could't make socket work with internal docker port is like somenthing is happening with al the pulling
-// const socket = io('http://localhost:4000');
 const Exchange = () => {
-  // useEffect(() => {
-  //   console.log('useEffect se ejecutó', socket.connect);
-  //   socket.on('update', (data) => {
-  //     console.log('UPDATE se ejecutó', data);
-  //   });
-  // }, []);
-  // console.log('que paso');
-  return <Toolbar />;
+  const socket = useContext(Context);
+  const [livePrices, setLivePrices] = useState();
+  useEffect(() => {
+    socket.emit('updateLiveCurrencies');
+    socket.on('update', (data) => setLivePrices(data));
+  }, [setLivePrices, socket]);
+
+  return (
+    <ExchangeContainer>
+      <Toolbar data={livePrices} />
+      <HistoryTable data={livePrices} />
+    </ExchangeContainer>
+  );
 };
 
 export default Exchange;

@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 
 import App from './components/pages/Exchange';
+import { socket, WebsocketProvider } from './contexts/websocket';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
 
@@ -10,7 +11,9 @@ const root = ReactDOM.createRoot(
 );
 root.render(
   <React.StrictMode>
-    <App />
+    <WebsocketProvider value={socket}>
+      <App />
+    </WebsocketProvider>
   </React.StrictMode>,
 );
 

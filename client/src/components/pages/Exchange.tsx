@@ -3,7 +3,6 @@ import { useContext, useEffect, useState } from 'react';
 import { Context } from '../../contexts/websocket';
 import Toolbar from '../molecules/Toolbar';
 import HistoryTable from '../organism/HistoryTable';
-import { exchangeData } from '../types';
 import { ExchangeContainer } from './Exchange.style';
 
 const Exchange = () => {

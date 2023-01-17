@@ -6,7 +6,8 @@ interface StyledTdProps {
 
 export const StyledTable = styled.table`
   width: 100%;
-  & > tr:nth-child(odd) {
+  & > thead,
+  tbody tr:nth-child(even) {
     background: #eeeeee;
   }
   &,

@@ -1,5 +1,4 @@
-import React from 'react';
-
+import OutlineButton from './Outline';
 import PrimaryButton from './Primary';
 
 export interface ButtomProps {
@@ -11,6 +10,7 @@ export interface ButtomProps {
 const Button = ({ variant, ...props }: ButtomProps) => {
   switch (variant) {
     case 'outline':
+      return <OutlineButton {...props} />;
     default:
       return <PrimaryButton {...props} />;
   }

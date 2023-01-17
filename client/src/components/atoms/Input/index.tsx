@@ -1,25 +1,21 @@
-import React, { ChangeEvent } from 'react';
+import DateInput from './Date';
+import PrimaryInput from './Primary';
 
-import { Input as InputWrapper, Label, InputContainer } from './index.style';
-
-interface InputProps {
-  onTextChange?: (value: string | null) => void;
+export interface InputProps {
+  variant?: string;
   disabled?: boolean;
   labelText?: string;
+  onClick?: () => void;
 }
-const Input = ({ labelText, onTextChange }: InputProps) => {
-  function handleChange(event: ChangeEvent<HTMLInputElement>) {
-    if (!onTextChange) {
-      return;
-    }
-    onTextChange(event.target.value);
+
+const Input = (props: InputProps) => {
+  const { variant } = props;
+  switch (variant) {
+    case 'date':
+      return <DateInput {...props} />;
+    default:
+      return <PrimaryInput {...props} />;
   }
-  return (
-    <InputContainer>
-      <Label>{labelText}</Label>
-      <InputWrapper onChange={handleChange} />
-    </InputContainer>
-  );
 };
 
 export default Input;

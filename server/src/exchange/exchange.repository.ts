@@ -1,15 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import {
-  paginate,
-  Pagination,
-  IPaginationOptions,
-} from 'nestjs-typeorm-paginate';
+import { paginate, Pagination } from 'nestjs-typeorm-paginate';
 import { EntityNotFoundError, Repository } from 'typeorm';
 
 import { Exchange } from './exchange.entity';
 import { Type } from './exchange.model';
-import { currencieProp } from './types';
+import { currencyProp, IPaginationOptionExtended } from './types';
 
 @Injectable()
 export class ExchangeRepository {
@@ -23,10 +19,25 @@ export class ExchangeRepository {
    * @param {object} options params to control the page and the limit
    * @returns {Promise<Pagination<Exchange>> }
    */
-  paginate(options: IPaginationOptions): Promise<Pagination<Exchange>> {
-    const queryBuilder = this.exchangeRepository.createQueryBuilder('c');
-    queryBuilder.orderBy('c.date', 'ASC');
-
+  paginate({
+    type,
+    endDate,
+    startDate,
+    ...options
+  }: IPaginationOptionExtended): Promise<Pagination<Exchange>> {
+    const queryBuilder = this.exchangeRepository
+      .createQueryBuilder('c')
+      .orderBy('c.date', 'ASC');
+    if (startDate && endDate && type) {
+      const date = new Date(endDate);
+      date.setDate(date.getDate() + 1);
+      queryBuilder
+        .where('date > :startDate', {
+          startDate,
+        })
+        .andWhere('date < :endDate', { endDate: date })
+        .andWhere('type LIKE :type', { type });
+    }
     return paginate<Exchange>(queryBuilder, options);
   }
   /**
@@ -37,11 +48,7 @@ export class ExchangeRepository {
    * @param {string} currency_to to the currencia you want to exchange
    * @returns {Promise<Exchange>}
    */
-  async createLiveCurencie({
-    rate,
-    currency_to,
-    currency_from,
-  }: currencieProp) {
+  async createLiveCurencie({ rate, currency_to, currency_from }: currencyProp) {
     const exchange = this.exchangeRepository.create({
       date: new Date(),
       currency_from,
@@ -65,7 +72,7 @@ export class ExchangeRepository {
     rate,
     currency_to,
     currency_from,
-  }: currencieProp) {
+  }: currencyProp) {
     try {
       const exchange = await this.exchangeRepository.findOneOrFail({
         where: { currency_from, currency_to, type: Type.LIVE },

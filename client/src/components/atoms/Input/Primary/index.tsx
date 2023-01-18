@@ -17,7 +17,6 @@ const PrimaryInput = ({ labelText, onTextChange, ...props }: InputProps) => {
     }
     onTextChange(event.target.value);
   }
-
   return (
     <InputContainer>
       <Label>{labelText}</Label>

@@ -6,6 +6,7 @@ export interface InputProps {
   disabled?: boolean;
   labelText?: string;
   onClick?: () => void;
+  onChangeText?: (value: string | null) => void;
 }
 
 const Input = (props: InputProps) => {

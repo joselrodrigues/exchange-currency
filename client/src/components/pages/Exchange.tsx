@@ -12,11 +12,10 @@ const Exchange = () => {
     socket.emit('updateLiveCurrencies');
     socket.on('update', (data) => setLivePrices(data));
   }, [setLivePrices, socket]);
-
   return (
     <ExchangeContainer>
-      <Toolbar data={livePrices} />
-      <HistoryTable data={livePrices} />
+      <Toolbar />
+      <HistoryTable />
     </ExchangeContainer>
   );
 };

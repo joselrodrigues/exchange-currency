@@ -6,11 +6,11 @@ import {
   WebSocketGateway,
   WebSocketServer,
 } from '@nestjs/websockets';
-import { IPaginationOptions } from 'nestjs-typeorm-paginate';
 import { interval } from 'rxjs';
 import { Server } from 'socket.io';
 
 import { ExchangeService } from './exchange.service';
+import { IPaginationOptionExtended } from './types';
 
 @WebSocketGateway({
   cors: true,
@@ -45,13 +45,24 @@ export class Socket implements OnModuleInit, OnModuleDestroy {
   @SubscribeMessage('getExchangeData')
   async getExchangeData(
     @MessageBody()
-    { limit = 5, page = 1, route = '/exchange' }: IPaginationOptions,
+    {
+      limit = 5,
+      page = 1,
+      route = '/exchange',
+      type,
+      startDate,
+      endDate,
+    }: IPaginationOptionExtended,
   ) {
     const data = await this.exchangeService.getExchangeDataByPage({
       page,
       limit,
       route,
+      type,
+      startDate,
+      endDate,
     });
+
     this.server.emit('exchangeData', data);
   }
 }

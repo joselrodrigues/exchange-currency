@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 
 import {
   Option,
@@ -27,7 +27,6 @@ export const Dropdown = ({
   const [select, setSelect] = useState(
     options && { value: '', image: '', text: 'Select' },
   );
-
   function handleSelection(
     event: React.MouseEvent<HTMLDivElement, MouseEvent>,
   ) {
@@ -45,7 +44,7 @@ export const Dropdown = ({
       setSelect({ value: '', image: '', text: 'Select' });
       onSelection && onSelection('');
     }
-  }, [options, select?.value, onSelection]);
+  }, [select?.value]);
   return (
     <DropdownContainer isVisible={drop}>
       <Label>{labelText}</Label>

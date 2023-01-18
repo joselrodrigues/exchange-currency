@@ -7,6 +7,7 @@ import { lastValueFrom, map, mergeMap, Observable, of, toArray } from 'rxjs';
 import { currencieDto } from './dto/exchange-dto';
 import { Exchange } from './exchange.entity';
 import { ExchangeRepository } from './exchange.repository';
+import { IPaginationOptionExtended } from './types';
 
 @Injectable()
 export class ExchangeService {
@@ -23,7 +24,7 @@ export class ExchangeService {
    * @returns {Promise<Pagination<Exchange>> }
    */
   getExchangeDataByPage(
-    options: IPaginationOptions,
+    options: IPaginationOptionExtended,
   ): Promise<Pagination<Exchange>> {
     return this.exchangeRepository.paginate(options);
   }

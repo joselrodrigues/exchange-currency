@@ -12,7 +12,7 @@ import {
   ToolbarWrapper,
 } from './index.style';
 
-const Toolbar = ({ data }: exchangeData) => {
+const Toolbar = () => {
   const [currencyFrom, setCurrencyFrom] = useState<string | null>('');
   const [currenciesTo, setCurrenciesTo] = useState(currencyOptions);
 

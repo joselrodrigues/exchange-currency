@@ -8,15 +8,24 @@ export interface DateInputProps {
   variant?: string;
   disabled?: boolean;
   labelText?: string;
+  onChangeText?: (value: string | null) => void;
   onClick?: () => void;
 }
 
-const DateInput = (props: DateInputProps) => {
+const DateInput = ({ onChangeText, ...props }: DateInputProps) => {
   const [date, setDate] = useState<Date | null>();
   return (
     <DatePicker
       selected={date}
-      onChange={(value) => setDate(value)}
+      onChange={(value) => {
+        setDate(value);
+        onChangeText &&
+          onChangeText(
+            `${value?.getFullYear()}-${value && value.getMonth() + 1}-${
+              value && value?.getDate()
+            }`,
+          );
+      }}
       customInput={<PrimaryInput {...props} />}
     />
   );

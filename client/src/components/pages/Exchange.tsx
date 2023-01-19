@@ -10,8 +10,13 @@ const Exchange = () => {
   const [livePrices, setLivePrices] = useState();
   useEffect(() => {
     socket.emit('updateLiveCurrencies');
-    socket.on('update', (data) => setLivePrices(data));
-  }, [setLivePrices, socket]);
+    return () => {
+      socket.off('connect');
+      socket.off('exchangeData');
+      socket.off('update');
+      socket.off('updateLiveCurrencies');
+    };
+  }, [socket]);
   return (
     <ExchangeContainer>
       <Toolbar />

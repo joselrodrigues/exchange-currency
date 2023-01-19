@@ -1,13 +1,10 @@
-import { useContext, useEffect, useState } from 'react';
-
-import { ExchangeContext } from '../../../contexts/exchange';
-import { Context } from '../../../contexts/websocket';
+import Paginate from '../../atoms/Paginate';
 import Table from '../../atoms/Table';
 import HistoryFilter from '../../molecules/HistoryFilter';
-import { exchangeDataWithPagination } from '../../types';
 import {
   HistoryFilterWrapper,
   HistoryTableContainer,
+  PaginateContainer,
   Title,
 } from './index.style';
 
@@ -18,8 +15,10 @@ const HistoryTable = () => {
       <HistoryFilterWrapper>
         <HistoryFilter />
       </HistoryFilterWrapper>
-      {/* <Table data={history?.items} /> */}
       <Table />
+      <PaginateContainer>
+        <Paginate />
+      </PaginateContainer>
     </HistoryTableContainer>
   );
 };

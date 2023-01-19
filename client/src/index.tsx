@@ -2,7 +2,10 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 
 import App from './components/pages/Exchange';
-import { ExchangeProvider } from './contexts/exchange';
+import {
+  ExchangeMetaDataProvider,
+  ExchangeProvider,
+} from './contexts/exchange';
 import { socket, WebsocketProvider } from './contexts/websocket';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
@@ -14,7 +17,9 @@ root.render(
   <React.StrictMode>
     <WebsocketProvider value={socket}>
       <ExchangeProvider>
-        <App />
+        <ExchangeMetaDataProvider>
+          <App />
+        </ExchangeMetaDataProvider>
       </ExchangeProvider>
     </WebsocketProvider>
   </React.StrictMode>,

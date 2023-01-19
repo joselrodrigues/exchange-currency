@@ -1,6 +1,9 @@
 import { useContext, useEffect, useState } from 'react';
 
-import { ExchangeContext } from '../../../contexts/exchange';
+import {
+  ExchangeContext,
+  ExchangeMetaDataContext,
+} from '../../../contexts/exchange';
 import { Context } from '../../../contexts/websocket';
 import { formatDateTime24h } from '../../../utils/time';
 import { exchangeData } from '../../types';
@@ -9,21 +12,28 @@ import { StyledTable, StyledTd } from './index.style';
 const Table = () => {
   const [data, setData] = useState<exchangeData[]>();
   const { exchangeFilter } = useContext(ExchangeContext);
+  const { setExchangeMetaData } = useContext(ExchangeMetaDataContext);
   const socket = useContext(Context);
 
   useEffect(() => {
     socket.on('update', () => socket.emit('getExchangeData', exchangeFilter));
-    socket.on('exchangeData', (data) => setData(data.items));
+    socket.on('exchangeData', (data) => {
+      setExchangeMetaData((prev) => ({
+        ...prev,
+        totalPages: data?.meta.totalPages,
+      }));
+      setData(data.items);
+    });
     socket.emit('getExchangeData', exchangeFilter);
     return () => {
       socket.off('connect');
       socket.off('exchangeData');
       socket.off('update');
     };
-  }, [setData, socket, exchangeFilter]);
+  }, [setData, socket, exchangeFilter, setExchangeMetaData]);
 
   return data && data.length > 0 ? (
-    <StyledTable width="100%">
+    <StyledTable>
       <thead>
         <tr>
           <th>Date & Time</th>

@@ -1,8 +1,8 @@
 import { HttpService } from '@nestjs/axios';
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { Pagination, IPaginationOptions } from 'nestjs-typeorm-paginate';
-import { lastValueFrom, map, mergeMap, Observable, of, toArray } from 'rxjs';
+import { Pagination } from 'nestjs-typeorm-paginate';
+import { lastValueFrom, map, mergeMap, Observable, toArray } from 'rxjs';
 
 import { currencieDto } from './dto/exchange-dto';
 import { Exchange } from './exchange.entity';
